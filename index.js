@@ -51,6 +51,7 @@ function setToBought() {
     main();
   });
 }
+
 function main() {
   rl.question(
     `Here are the options
