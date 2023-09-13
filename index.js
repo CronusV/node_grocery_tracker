@@ -1,6 +1,5 @@
-// TODO Sanitation, duplicates, and errors.
+// TODO Sanitation, duplicates, and errors. Assume no user error
 let groceryList = [];
-
 const { stdin } = require('process');
 // Import the readline module for handling user input in the console
 const readline = require('readline');
@@ -22,7 +21,7 @@ function getItemFromUser() {
           groceryItem.item = item;
           groceryItem.quantity = +quantity;
           groceryItem.price = +price;
-          groceryItem.bought = Boolean(bought);
+          groceryItem.bought = bought === 'false' ? false : true;
 
           groceryList.push(groceryItem);
           main();
@@ -32,6 +31,26 @@ function getItemFromUser() {
   });
 }
 
+function deleteItem() {
+  rl.question(`What is the item name you want to remove?\n`, (item) => {
+    groceryList = groceryList.filter((groceryItem) => {
+      return groceryItem.item !== item;
+    });
+    main();
+  });
+}
+
+function setToBought() {
+  rl.question(`Which item do you want to set to bought? \n`, (item) => {
+    for (groceryItem of groceryList) {
+      if (groceryItem.item === item) {
+        groceryItem.bought = true;
+        break;
+      }
+    }
+    main();
+  });
+}
 function main() {
   rl.question(
     `Here are the options
@@ -40,15 +59,17 @@ function main() {
   3. Set Item to bought
   4. Display Grocery List
   5. Exit
-  `,
+  \n`,
     (res) => {
       switch (res) {
         case '1':
           getItemFromUser();
           break;
         case '2':
+          deleteItem();
           break;
         case '3':
+          setToBought();
           break;
         case '4':
           console.log(groceryList);
