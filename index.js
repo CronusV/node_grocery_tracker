@@ -14,10 +14,25 @@ rl.once('close', () => {
 });
 
 function getItemFromUser() {
-  return { item, quantity, price, bought };
+  let groceryItem = {};
+  rl.question('What is the item name\n', (item) => {
+    rl.question('What is the quantity?\n', (quantity) => {
+      rl.question('What is the price?\n', (price) => {
+        rl.question('Have you bought it yet? (true/false)\n', (bought) => {
+          groceryItem.item = item;
+          groceryItem.quantity = +quantity;
+          groceryItem.price = +price;
+          groceryItem.bought = Boolean(bought);
+
+          groceryList.push(groceryItem);
+          main();
+        });
+      });
+    });
+  });
 }
 
-async function main() {
+function main() {
   rl.question(
     `Here are the options
   1. Add 
@@ -29,20 +44,21 @@ async function main() {
     (res) => {
       switch (res) {
         case '1':
+          getItemFromUser();
           break;
         case '2':
           break;
         case '3':
           break;
         case '4':
+          console.log(groceryList);
+          main();
           break;
         case '5':
           rl.close();
       }
     }
   );
-
-  rl.close();
 }
 
 console.log('Welcome to grocery shopping tracker!');
