@@ -78,6 +78,10 @@ function main() {
           break;
         case '5':
           rl.close();
+          break;
+        default:
+          console.log('Invalid input, try again!');
+          main();
       }
     }
   );
